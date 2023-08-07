@@ -33,6 +33,16 @@ async function run() {
         res.send(result);
     })
 
+    //client to server
+    app.post('/item',async(req,res) =>{
+      const newCommunity = req.body;
+      console.log(newCommunity);
+      //server to database (database result dibe)
+      const result = await travelCollection.insertOne(newCommunity);
+      //send the result to the client
+      res.send(result);
+    })
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
