@@ -27,18 +27,36 @@ async function run() {
     await client.connect();
 
     const travelCollection  =  client.db('Traveldb').collection('menu');
+    const CommunityCollection  =  client.db('Traveldb').collection('Community');
+
 
     app.get('/menu', async(req,res) =>{
         const result = await travelCollection.find().toArray();
         res.send(result);
     })
 
+    app.get('/community', async(req,res) =>{
+      const result = await CommunityCollection.find().toArray();
+      res.send(result);
+  })
+
     //client to server
     app.post('/item',async(req,res) =>{
+      const newpost = req.body;
+      console.log(newpost);
+      //server to database (database result dibe)
+      const result = await travelCollection.insertOne(newpost);
+      //send the result to the client
+      res.send(result);
+    })
+
+
+    //client to server
+    app.post('/community',async(req,res) =>{
       const newCommunity = req.body;
       console.log(newCommunity);
       //server to database (database result dibe)
-      const result = await travelCollection.insertOne(newCommunity);
+      const result = await CommunityCollection.insertOne(newCommunity);
       //send the result to the client
       res.send(result);
     })
