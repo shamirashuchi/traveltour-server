@@ -28,6 +28,7 @@ async function run() {
 
     const travelCollection  =  client.db('Traveldb').collection('menu');
     const CommunityCollection  =  client.db('Traveldb').collection('Community');
+    const requestCollection  =  client.db('Traveldb').collection('request');
 
 
     app.get('/menu', async(req,res) =>{
@@ -39,6 +40,11 @@ async function run() {
       const result = await CommunityCollection.find().toArray();
       res.send(result);
   })
+
+  app.get('/req', async(req,res) =>{
+    const result = await requestCollection.find().toArray();
+    res.send(result);
+})
 
     //client to server
     app.post('/item',async(req,res) =>{
@@ -60,6 +66,14 @@ async function run() {
       //send the result to the client
       res.send(result);
     })
+
+
+    app.post('/req', async(req,res) => {
+      const requested = req.body;
+      console.log(requested);
+      const result = await requestCollection.insertOne(requested);
+      res.send(result);
+  })
 
 
     // Send a ping to confirm a successful connection
